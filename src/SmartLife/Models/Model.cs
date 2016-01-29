@@ -74,7 +74,7 @@ namespace SmartLife.Models
         Pressure,
         Moisture,
         Level,
-        Movement
+        State
     }
 
     #endregion
@@ -202,14 +202,20 @@ namespace SmartLife.Models
                 // Теплица 1
                 .AddCompositeObject(new GreenHouse("53", "grh1", "Теплица 1")
                                         .AddSensor(new TemperatureSensor("104", "t104", "температура"))
+                                        .AddSensor(new StateSensor("108", "oc108", "состояние двери") { Value = "закрыта"})
                                         .AddCompositeObject(new Barrel("60", "barrel60", "Бочка 1")
-                                                                .AddSensor(new LevelSensor("105", "l105", "уровень"))))
-                                        
+                                                                .AddSensor(new LevelSensor("105", "l105", "уровень")))
+                                        .AddCompositeObject(new Barrel("63", "barrel63", "Бочка 2")
+                                                                .AddSensor(new LevelSensor("106", "l106", "уровень")))
+
+                                                                )
+
                 // Теплица 2
                 .AddCompositeObject(new GreenHouse("52", "grh2", "Теплица 2")   
-                                        .AddCompositeObject(new Barrel("61", "barrel61", "Бочка 2")
+                                        .AddCompositeObject(new Barrel("61", "barrel61", "Бочка 1")
                                                                 .AddSensor(new LevelSensor("106", "l106", "уровень")))
                                         .AddSensor(new TemperatureSensor("107", "t107", "температура"))
+                                        .AddSensor(new StateSensor("109", "oc109", "состояние двери") { Value = "закрыта" })
 
                 );            
             
@@ -339,7 +345,7 @@ namespace SmartLife.Models
         public MovementSensor(string id, string name, string displayName) :base(id, name, displayName)
         {
 
-            SensorType = SensorType.Movement;
+            SensorType = SensorType.State;
             MeasureUnit = "";
         }
     }
@@ -354,6 +360,21 @@ namespace SmartLife.Models
         }
 
     }
+
+    /// <summary>
+    /// Датчик состояния
+    /// </summary>
+    public class StateSensor : SensorBase
+    {
+        public StateSensor(string id, string name, string displayName) :base(id, name, displayName)
+        {
+
+            SensorType = SensorType.State;
+            MeasureUnit = "";
+        }
+
+    }
+
     #endregion
 
     #endregion
