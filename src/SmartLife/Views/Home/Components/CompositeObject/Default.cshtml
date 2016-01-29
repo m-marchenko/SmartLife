@@ -1,0 +1,46 @@
+﻿@model SmartLife.Models.ICompositeObject
+@{
+    // ViewBag.Title = "Home Page";
+}
+
+<div class="col-xs-12">
+    @if (Model.All.OfType<SmartLife.Models.ICompositeObject>().Count() > 0)
+    {
+        <ul class="nav nav-tabs">
+            @foreach (var cobj in Model.All.OfType<SmartLife.Models.ICompositeObject>())
+            {
+                <li><a data-toggle="tab" href="#@cobj.Name">@cobj.DisplayName</a></li>
+            }
+
+            @if (Model.Sensors.Count > 0)
+            {
+                <li class="active"><a data-toggle="tab" href="#@Model.Name@Model.Id@Model.Id">Датчики</a></li>
+            }
+        </ul>
+
+        <div class="tab-content">
+            @foreach (var cobj in Model.All.OfType<SmartLife.Models.ICompositeObject>())
+            {
+                <div id="@cobj.Name" class="tab-pane fade">
+                    @Component.Invoke("CompositeObject", cobj)
+                </div>
+            }
+            @if (Model.Sensors.Count > 0)
+            {
+                <div id='@Model.Name@Model.Id@Model.Id' class="tab-pane fade in active">
+                    @*<h4>@Model.DisplayName - показания датчиков</h4>*@
+                    @Component.Invoke("Sensors", Model.Sensors)
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        @*<h4>@Model.DisplayName - показания датчиков</h4>*@
+        @Component.Invoke("Sensors", Model.Sensors)
+
+    }
+</div>
+
+   
